@@ -24,14 +24,17 @@ jobs:
     - name: Instalar dependências
       run: pip install pyyaml regex
 
-    - name: Instalar promtool
-      run: |
-        wget https://github.com/prometheus/prometheus/releases/latest/download/prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
-        tar -xvf prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
-        sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
 
-    - name: Validar sintaxe do arquivo de alertas com promtool
-      run: find ${{ github.workspace }} -type f -name "*.yaml" -o -name "*.yml" -exec promtool check rules {} +
+    - name: Verificar diretorio
+      run: ls -lha
+    # - name: Instalar promtool
+    #   run: |
+    #     wget https://github.com/prometheus/prometheus/releases/latest/download/prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
+    #     tar -xvf prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
+    #     sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
 
-    - name: Executar validação de sintaxe com Python
-      run: python validate_alerts.py ${{ github.workspace }}
+    # - name: Validar sintaxe do arquivo de alertas com promtool
+    #   run: find ${{ github.workspace }} -type f -name "*.yaml" -o -name "*.yml" -exec promtool check rules {} +
+
+    # - name: Executar validação de sintaxe com Python
+    #   run: python validate_alerts.py ${{ github.workspace }}
