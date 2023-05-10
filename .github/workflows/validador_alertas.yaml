@@ -37,7 +37,7 @@ jobs:
         prom_version: '2.43.1'
         prom_check_subcommand: 'rules'
         prom_check_files: '**/*.y*ml'
-        prom_comment: true
+        # prom_comment: true
 
     # - name: Validar sintaxe do arquivo de alertas com promtool
     #   run: |
