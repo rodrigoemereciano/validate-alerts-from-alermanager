@@ -5,6 +5,9 @@ on:
     branches:
     - '*'
 
+env:
+  PROMETHEUS_VERSION: '2.43.1'
+
 jobs:
   syntax_check:
     runs-on: ubuntu-latest
