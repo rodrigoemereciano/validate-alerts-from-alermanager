@@ -31,8 +31,8 @@ jobs:
       run: |
         wget https://github.com/prometheus/prometheus/releases/latest/download/prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
         tar -xvf prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
-        rm -fr prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64
         sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
+        rm -fr prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64
 
     - name: Validar sintaxe do arquivo de alertas com promtool
       run: find . -type f -name "*.yaml" -o -name "*.yml" -exec promtool check rules {} +
