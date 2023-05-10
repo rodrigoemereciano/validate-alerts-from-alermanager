@@ -24,28 +24,28 @@ jobs:
     - name: Instalar dependências
       run: pip install pyyaml regex
 
-    # - name: Instalar promtool
-    #   run: |
-    #     wget https://github.com/prometheus/prometheus/releases/latest/download/prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
-    #     tar -xvf prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
-    #     sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
-    #     rm -fr prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64
+    - name: Instalar promtool
+      run: |
+        wget https://github.com/prometheus/prometheus/releases/latest/download/prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
+        tar -xvf prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64.tar.gz
+        sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
+        rm -fr prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64
 
-    - name: promtool check'
-      uses: karancode/promtool-action@v0.0.1
-      with:
-        prom_version: '2.43.1'
-        prom_check_subcommand: 'rules'
-        prom_check_files: '**/*.y*ml'
-        # prom_comment: true
+    # - name: promtool check
+    #   uses: karancode/promtool-action@v0.0.1
+    #   with:
+    #     prom_version: '2.43.1'
+    #     prom_check_subcommand: 'rules'
+    #     prom_check_files: '**/*.y*ml'
+    #     prom_comment: true
 
-    # - name: Validar sintaxe do arquivo de alertas com promtool
-    #   run: |
-    #     for dir in *-dev *-hom *-pro; do
-    #       if [[ -d $dir ]]; then
-    #         find "$dir" -type f \( -name "*.yaml" -o -name "*.yml" \) -exec promtool check rules {} +
-    #       fi
-    #     done
+    - name: Validar sintaxe do arquivo de alertas com o promtool
+      run: |
+        for dir in *-dev *-hom *-pro; do
+          if [[ -d $dir ]]; then
+            find "$dir" -type f \( -name "*.yaml" -o -name "*.yml" \) -exec promtool check rules {} +
+          fi
+        done
 
     - name: Executar validação de sintaxe com Python
       run: python .github/workflows/validate_alerts.py
