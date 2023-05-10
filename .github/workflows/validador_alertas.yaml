@@ -33,7 +33,11 @@ jobs:
 
     - name: Validar sintaxe do arquivo de alertas com promtool
       run: |
-        find . -type f -name "**/.y*ml" -exec promtool check rules {} +
+        for dir in *-dev *-hom *-pro; do
+          if [[ -d $dir ]]; then
+            find "$dir" -type f \( -name "*.yaml" -o -name "*.yml" \) -exec promtool check rules {} +
+          fi
+        done
 
     - name: Executar validação de sintaxe com Python
       run: python .github/workflows/validate_alerts.py
