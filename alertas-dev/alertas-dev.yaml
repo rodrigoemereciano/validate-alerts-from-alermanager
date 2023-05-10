@@ -18,7 +18,7 @@ groups:
     labels:
       severity: critical
       channel: service_now
-      #kb: 8979237
+      kb: 8979237
     annotations:
       alert_group: TestGroup
       alert_type: DiscoCheio
