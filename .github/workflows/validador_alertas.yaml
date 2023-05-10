@@ -38,4 +38,4 @@ jobs:
       run: find . -type f -name "*.yaml" -o -name "*.yml" -exec promtool check rules {} +
 
     - name: Executar validação de sintaxe com Python
-      run: python validate_alerts.py
+      run: python .github/workflows/validate_alerts.py
