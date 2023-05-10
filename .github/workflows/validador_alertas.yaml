@@ -3,7 +3,7 @@ name: Validar Sintaxe do Arquivo de Alertas
 on:
   push:
     branches:
-    - main
+    - '*'
 
 jobs:
   syntax_check:
