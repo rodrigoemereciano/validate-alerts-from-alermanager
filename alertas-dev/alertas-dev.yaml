@@ -10,7 +10,7 @@ groups:
       email_to: teste@gmail.com
     annotations:
       summary: "Carga alta de CPU no {{ $labels.instance }}"
-      description: "A carga de CPU no {{ $labels.instance }} está acima de 2.0 (atual valor: {{ $value }})"
+      description: "A carga de CPU no {{ $labels.instance }} está acima de 2.0 (atual valor: {{ $value }}). email_router"
 
   - alert: DiscoCheio
     expr: (node_filesystem_free{mountpoint="/"} / node_filesystem_size{mountpoint="/"}) * 100 < 10
