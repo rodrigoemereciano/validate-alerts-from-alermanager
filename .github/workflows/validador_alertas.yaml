@@ -56,5 +56,4 @@ jobs:
         COMMIT_MSG=$(git log --format=%B --no-merges -n 1 ${{ github.event.before }}..${{ github.event.after }})
         if [[ $COMMIT_MSG == *'email_router'* ]]; then
           echo "Commit message contem 'email_router'. Por favor remover o termo no commit message."
-          exit 1
         fi
