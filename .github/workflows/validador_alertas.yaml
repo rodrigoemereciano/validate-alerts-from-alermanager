@@ -15,6 +15,9 @@ jobs:
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 2 # Garante que temos histórico suficiente para comparar
+
 
     - name: Configurar Python
       uses: actions/setup-python@v2
