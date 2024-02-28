@@ -50,12 +50,12 @@ jobs:
     - name: Executar validação de sintaxe com Python
       run: python .github/workflows/validate_alerts.py
 
-    - name: Extract and check added lines in the last commit for "email_router"
+    - name: Check added lines for "email_router"
       run: |
-        # Extrai linhas adicionadas no último commit, excluindo cabeçalhos de arquivo
-        ADDED_LINES=$(git show --pretty=format: --unified=0 | grep '^+' | grep -v '^+++')
+        # Obtem as linhas adicionadas no último commit, excluindo qualquer metadado ou cabeçalho
+        ADDED_LINES=$(git diff HEAD^! --unified=0 | grep '^\+' | grep -v '^\+\+\+' | grep -v '^+')
 
-        # Verifica se as linhas adicionadas contêm 'email_router'
+        # Verifica se "email_router" está presente nessas linhas
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
           echo "'email_router' found in the added lines of the last commit."
           exit 1
