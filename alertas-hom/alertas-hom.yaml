@@ -17,7 +17,7 @@ groups:
     for: 15m
     labels:
       severity: critical
-      channel: service_now
+      channel: email_router
       KB: 8979237
     annotations:
       alert_group: TestGroup
