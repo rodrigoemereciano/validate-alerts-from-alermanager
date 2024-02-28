@@ -24,3 +24,16 @@ groups:
       alert_type: DiscoCheio
       summary: "Disco quase cheio no {{ $labels.instance }}"
       description: "A capacidade de armazenamento no {{ $labels.instance }} está abaixo de 10% (atual valor: {{ $value }})"
+
+  - alert: DiscoCheio
+    expr: (node_filesystem_free{mountpoint="/"} / node_filesystem_size{mountpoint="/"}) * 100 < 10
+    for: 15m
+    labels:
+      severity: critical
+      channel: email_router
+      kb: 8979237
+    annotations:
+      alert_group: TestGroup
+      alert_type: DiscoCheio
+      summary: "Disco quase cheio no {{ $labels.instance }}"
+      description: "A capacidade de armazenamento no {{ $labels.instance }} está abaixo de 10% (atual valor: {{ $value }})"
