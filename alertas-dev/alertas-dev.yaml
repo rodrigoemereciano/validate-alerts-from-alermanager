@@ -6,7 +6,7 @@ groups:
     for: 5m
     labels:
       severity: major
-      channel: service_now.
+      channel: service_now
       email_to: teste@gmail.com
     annotations:
       summary: "Carga alta de CPU no {{ $labels.instance }}"
