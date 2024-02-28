@@ -50,12 +50,17 @@ jobs:
     - name: Executar validação de sintaxe com Python
       run: python .github/workflows/validate_alerts.py
 
-    - name: Verificando somente no commit por "email_router"
+    - name: Check added lines in the last commit for "email_router"
       run: |
-        # Extrai as mudanças (adições) do último commit e procura por "email_router"
-          if git show --pretty="format:" --unified=0 | grep -q '+.*email_router'; then
-          echo "'email_router' encontrado somente no commit."
+        # Mostra as diferenças introduzidas no último commit, filtrando para linhas adicionadas
+        ADDED_LINES=$(git show --pretty=format: --unified=0 | grep '^+[^+]' | grep -v '^+++')
+        echo "Added lines in the last commit:"
+        echo "$ADDED_LINES"
+
+        # Procura por "email_router" apenas nas linhas adicionadas
+        if echo "$ADDED_LINES" | grep -q 'email_router'; then
+          echo "'email_router' found in the added lines of the last commit."
           exit 1
         else
-          echo "'email_router' nao foi encontrado no ultimo commit. Continuando..."
+          echo "No 'email_router' found in the added lines of the last commit. Proceeding..."
         fi
