@@ -53,7 +53,7 @@ jobs:
 
     - name: Verificar conteúdo do commit
       run: |
-        if git log -1 --pretty=format:%B | grep -q "email_router"; then
+        if ${{github.event.head_commit.message }} | grep -q "email_router"; then
           echo "Erro: O termo 'email_router' foi encontrado no conteúdo do commit."
           exit 1
         else
