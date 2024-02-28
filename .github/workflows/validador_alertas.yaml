@@ -15,9 +15,6 @@ jobs:
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 2 # Garante que temos histórico suficiente para comparar
-
 
     - name: Configurar Python
       uses: actions/setup-python@v2
@@ -53,34 +50,10 @@ jobs:
     - name: Executar validação de sintaxe com Python
       run: python .github/workflows/validate_alerts.py
 
-
-    - name: Verifica se tem mais de um commit
-      id: commit-check
-      run: |
-        if [ $(git rev-list --count HEAD) -gt 1 ]; then
-          echo "::set-output name=more_than_one_commit::true"
-        else
-          echo "::set-output name=more_than_one_commit::false"
-        fi
-
-    - name: verfica no ultimo commit se existe "email_router"
-      if: steps.commit-check.outputs.more_than_one_commit == 'true'
-      run: |
-        # Extrai mudanças do último commit
-        git diff HEAD~1 HEAD > changes.diff
-        # Verifica se 'email_router' está presente nas mudanças
-        if grep -q 'email_router' changes.diff; then
-          echo "'email_router' encontrado no ultimo commit."
-          exit 1
-        else
-          echo "'email_router' nao foi encontrado no ultimo commit. Continuando..."
-        fi
-
     - name: Verificando somente no commit por "email_router"
-      if: steps.commit-check.outputs.more_than_one_commit == 'false'
       run: |
-        # Verifica se 'email_router' está presente no primeiro (e único) commit
-        if git show | grep -q 'email_router'; then
+        # Extrai as mudanças (adições) do último commit e procura por "email_router"
+          if git show --pretty="format:" --unified=0 | grep -q '+.*email_router'; then
           echo "'email_router' encontrado somente no commit."
           exit 1
         else
