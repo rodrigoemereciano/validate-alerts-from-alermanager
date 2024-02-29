@@ -53,7 +53,7 @@ jobs:
     - name: Check added lines for "email_router"
       run: |
         # Obtem as linhas adicionadas no último commit, excluindo qualquer metadado ou cabeçalho
-        ADDED_LINES=$(git diff HEAD^! --unified=0 | grep '^\+' | grep -v '^\+\+\+' | grep -v '^+')
+        ADDED_LINES=$(git diff | grep '^\+' | grep -v '^\+\+\+' | grep -v '^+')
 
         # Verifica se "email_router" está presente nessas linhas
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
