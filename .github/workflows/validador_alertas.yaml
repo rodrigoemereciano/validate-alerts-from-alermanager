@@ -54,4 +54,4 @@ jobs:
       run: python -m pip install --upgrade pip
 
     - name: Verifica o termo 'email_router' no último commit
-      run: python ./check_email_router.py
+      run: python .github/workflows/check_email_router.py
