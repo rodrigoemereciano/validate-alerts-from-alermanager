@@ -60,5 +60,5 @@ jobs:
           echo "'email_router' found in the added lines of the last commit."
           exit 1
         else
-          echo "No 'email_router' found in the added lines of the last commit. Proceeding..."
+          echo "No 'email_router' found in the added lines of the last commit. Proceeding.."
         fi
