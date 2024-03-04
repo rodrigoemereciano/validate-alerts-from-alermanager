@@ -1,13 +1,29 @@
 import subprocess
-import sys
 
-# Executa o comando Git para obter a lista de arquivos modificados no último commit que contêm o termo 'email_router'
-result = subprocess.run(["git", "diff", "HEAD~1", "--name-only", "|", "xargs", "grep", "-l", "email_router"], capture_output=True, text=True, shell=True)
+def get_modified_files():
+    """Obtém uma lista dos arquivos modificados no último commit."""
+    result = subprocess.run(["git", "diff", "HEAD~1", "--name-only"], capture_output=True, text=True)
+    if result.returncode == 0:
+        return result.stdout.split()
+    else:
+        raise RuntimeError("Falha ao obter arquivos modificados.")
 
-# Verifica se o comando encontrou arquivos com o termo
-if result.stdout:
-    print("O termo 'email_router' foi encontrado nos seguintes arquivos do último commit:")
-    print(result.stdout)
-else:
-    print("O termo 'email_router' não foi encontrado nos arquivos do último commit.")
-    sys.exit(1)  # Sai com erro se o termo não for encontrado
+def search_term_in_files(files, term):
+    """Procura um termo nos arquivos fornecidos."""
+    for file in files:
+        with open(file, 'r', encoding='utf-8') as f:
+            if term in f.read():
+                return True, file
+    return False, None
+
+# Executa as funções
+try:
+    modified_files = get_modified_files()
+    term_found, file_with_term = search_term_in_files(modified_files, 'email_router')
+
+    if term_found:
+        print(f"O termo 'email_router' foi encontrado no arquivo: {file_with_term}")
+    else:
+        print("O termo 'email_router' não foi encontrado nos arquivos do último commit.")
+except Exception as e:
+    print(f"Erro: {e}")
