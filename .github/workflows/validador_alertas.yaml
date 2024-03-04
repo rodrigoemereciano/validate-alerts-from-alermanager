@@ -22,7 +22,7 @@ jobs:
         python-version: 3.x
 
     - name: Instalar dependências
-      run: pip install pyyaml regex
+      run: pip install pyyaml regex subprocess sys
 
     - name: Instalar promtool
       run: |
