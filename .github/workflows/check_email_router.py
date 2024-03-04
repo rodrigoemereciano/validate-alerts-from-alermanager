@@ -1,4 +1,8 @@
 import subprocess
+import os
+
+print("Diretório atual:", os.getcwd())
+
 
 def get_modified_files():
     """Obtém uma lista dos arquivos modificados no último commit."""
