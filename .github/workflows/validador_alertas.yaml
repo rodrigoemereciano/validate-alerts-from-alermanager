@@ -51,7 +51,7 @@ jobs:
       run: python .github/workflows/validate_alerts.py
 
     - name: Instala dependências
-        run: python -m pip install --upgrade pip
-        
+      run: python -m pip install --upgrade pip
+
     - name: Verifica o termo 'email_router' no último commit
       run: python ./check_email_router.py
