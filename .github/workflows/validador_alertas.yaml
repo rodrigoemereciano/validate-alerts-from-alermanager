@@ -58,27 +58,16 @@ jobs:
       with:
         fetch-depth: 0 # Garante o fetch de todo o histórico
 
-    - name: Verificar 'email_router' no código modificado
+    - name: Verificar 'email_router' nas modificações de código
       run: |
-        # Verifica se há pelo menos um commit anterior
-        if git rev-parse HEAD~1 > /dev/null 2>&1; then
-          MODIFIED_FILES=$(git diff --name-only HEAD~1 HEAD)
-        else
-          echo "Apenas um commit no branch; checando todos os arquivos."
-          MODIFIED_FILES=$(git ls-files)
-        fi
-        echo "Arquivos modificados ou existentes: $MODIFIED_FILES"
+        # Obtém as diferenças de código do último commit
+        # Usando --unified=0 para não incluir linhas de contexto
+        GIT_DIFF=$(git diff HEAD~1 HEAD --unified=0)
+        echo "$GIT_DIFF"
 
-        # Loop pelos arquivos para buscar o termo 'email_router'
-        FOUND=false
-        for file in $MODIFIED_FILES; do
-          if grep -q 'email_router' "$file"; then
-            echo "::error ::Termo 'email_router' encontrado em $file"
-            FOUND=true
-          fi
-        done
-
-        if [ "$FOUND" = true ]; then
+        # Verifica se a saída do git diff contém o termo 'email_router'
+        if echo "$GIT_DIFF" | grep -q 'email_router'; then
+          echo "::error ::Termo 'email_router' encontrado nas modificações."
           exit 1
         else
-          echo "Nenhum termo 'email_router' encontrado nos arquivos modificados ou existentes."
+          echo "Nenhum termo 'email_router' encontrado nas modificações."
