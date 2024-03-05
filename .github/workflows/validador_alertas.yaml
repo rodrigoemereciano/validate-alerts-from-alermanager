@@ -55,16 +55,20 @@ jobs:
 
     - name: Verificar 'email_router' no código modificado
       run: |
-        # Buscar por arquivos modificados que contêm o termo 'email_router'
-        # Esse comando lista arquivos modificados entre o branch base e o head do PR
-        MODIFIED_FILES=$(git diff --name-only ${{ github.base_ref }}...${{ github.head_ref }})
+        # Lista arquivos modificados no último commit
+        MODIFIED_FILES=$(git diff --name-only HEAD~1 HEAD)
         echo "Arquivos modificados: $MODIFIED_FILES"
 
         # Loop pelos arquivos modificados para buscar o termo 'email_router'
+        FOUND=false
         for file in $MODIFIED_FILES; do
           if grep -q 'email_router' "$file"; then
             echo "::error ::Termo 'email_router' encontrado em $file"
-            exit 1
+            FOUND=true
           fi
         done
-        echo "Nenhum termo 'email_router' encontrado nos arquivos modificados."
+
+        if [ "$FOUND" = true ]; then
+          exit 1
+        else
+          echo "Nenhum termo 'email_router' encontrado nos arquivos modificados."
