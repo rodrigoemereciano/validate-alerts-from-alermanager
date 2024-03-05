@@ -71,3 +71,16 @@ jobs:
           exit 1
         else
           echo "Nenhum termo 'email_router' encontrado nas modificações."
+
+    - name: Verificar 'email_router' apenas nas linhas adicionadas
+      run: |
+        # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
+        ADDED_LINES=$(git diff HEAD~1 HEAD --unified=0| grep '^+' | grep -v '^+++')
+        echo "$ADDED_LINES"
+
+        # Verificar se as linhas adicionadas contêm o termo 'email_router'
+        if echo "$ADDED_LINES" | grep -q '+      channel: email_router'; then
+          echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
+          exit 1
+        else
+          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
