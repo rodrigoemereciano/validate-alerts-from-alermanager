@@ -58,20 +58,6 @@ jobs:
       with:
         fetch-depth: 0 # Garante o fetch de todo o histórico
 
-    - name: Verificar 'email_router' nas modificações de código
-      run: |
-        # Obtém as diferenças de código do último commit
-        # Usando --unified=0 para não incluir linhas de contexto
-        GIT_DIFF=$(git diff HEAD~1 HEAD --unified=0)
-        echo "$GIT_DIFF"
-
-        # Verifica se a saída do git diff contém o termo 'email_router'
-        if echo "$GIT_DIFF" | grep -q 'email_router'; then
-          echo "::error ::Termo 'email_router' encontrado nas modificações."
-          exit 1
-        else
-          echo "Nenhum termo 'email_router' encontrado nas modificações."
-
     - name: Verificar 'email_router' apenas nas linhas adicionadas
       run: |
         # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
