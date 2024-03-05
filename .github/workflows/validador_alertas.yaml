@@ -53,13 +53,23 @@ jobs:
     - name: Instala dependências
       run: python -m pip install --upgrade pip
 
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Garante o fetch de todo o histórico
+
     - name: Verificar 'email_router' no código modificado
       run: |
-        # Lista arquivos modificados no último commit
-        MODIFIED_FILES=$(git diff --name-only HEAD~1 -- HEAD)
-        echo "Arquivos modificados: $MODIFIED_FILES"
+        # Verifica se há pelo menos um commit anterior
+        if git rev-parse HEAD~1 > /dev/null 2>&1; then
+          MODIFIED_FILES=$(git diff --name-only HEAD~1 HEAD)
+        else
+          echo "Apenas um commit no branch; checando todos os arquivos."
+          MODIFIED_FILES=$(git ls-files)
+        fi
+        echo "Arquivos modificados ou existentes: $MODIFIED_FILES"
 
-        # Loop pelos arquivos modificados para buscar o termo 'email_router'
+        # Loop pelos arquivos para buscar o termo 'email_router'
         FOUND=false
         for file in $MODIFIED_FILES; do
           if grep -q 'email_router' "$file"; then
@@ -71,4 +81,4 @@ jobs:
         if [ "$FOUND" = true ]; then
           exit 1
         else
-          echo "Nenhum termo 'email_router' encontrado nos arquivos modificados."
+          echo "Nenhum termo 'email_router' encontrado nos arquivos modificados ou existentes."
