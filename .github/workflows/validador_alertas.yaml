@@ -70,5 +70,4 @@ jobs:
         #   echo "$ADDED_LINES"
           echo "termo email_router foi encontrado"
         #   #exit 1
-        else
-          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
+        else echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
