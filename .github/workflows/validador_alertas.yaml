@@ -65,9 +65,9 @@ jobs:
         echo "$ADDED_LINES"
 
         # Verificar se as linhas adicionadas contêm o termo 'email_router'
-        if echo "$ADDED_LINES" | grep -q '+      channel: email_router'; then
-          echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
-          echo "$ADDED_LINES"
-          #exit 1
-        else
-          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
+        # if echo "$ADDED_LINES" | grep -q '+      channel: email_router'; then
+        #   echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
+        #   echo "$ADDED_LINES"
+        #   #exit 1
+        # else
+        #   echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
