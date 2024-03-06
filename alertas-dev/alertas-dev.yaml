@@ -6,11 +6,24 @@ groups:
     for: 5m
     labels:
       severity: major
-      channel: email_router
+      channel: service_now
       email_to: teste@gmail.com
     annotations:
       summary: "Carga alta de CPU no {{ $labels.instance }}"
-      description: "A carga de CPU no {{ $labels.instance }} está acima de 2.0 (atual valor: {{ $value }})"
+      description: "A carga de CPU no {{ $labels.instance }} está acima de 2.0 (atual valor: {{ $value }}) email_router"
+
+  - alert: DiscoCheio
+    expr: (node_filesystem_free{mountpoint="/"} / node_filesystem_size{mountpoint="/"}) * 100 < 10
+    for: 15m
+    labels:
+      severity: critical
+      channel: service_now
+      kb: 8979237
+    annotations:
+      alert_group: TestGroup
+      alert_type: DiscoCheio
+      summary: "Disco quase cheio no {{ $labels.instance }}"
+      description: "A capacidade de armazenamento no {{ $labels.instance }} está abaixo de 10% (atual valor: {{ $value }})"
 
   - alert: DiscoCheio
     expr: (node_filesystem_free{mountpoint="/"} / node_filesystem_size{mountpoint="/"}) * 100 < 10

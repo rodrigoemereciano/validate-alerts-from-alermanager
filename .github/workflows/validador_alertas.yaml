@@ -6,7 +6,7 @@ on:
     - '*'
 
 env:
-  PROMETHEUS_VERSION: '2.43.1'
+  PROMETHEUS_VERSION: '2.50.1'
 
 jobs:
   syntax_check:
@@ -31,14 +31,6 @@ jobs:
         sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
         rm -fr prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64
 
-    # - name: promtool check
-    #   uses: karancode/promtool-action@v0.0.1
-    #   with:
-    #     prom_version: '2.43.1'
-    #     prom_check_subcommand: 'rules'
-    #     prom_check_files: '**/*.y*ml'
-    #     prom_comment: true
-
     - name: Validar sintaxe do arquivo de alertas com o promtool
       run: |
         for dir in *-dev *-hom *-pro; do
@@ -49,3 +41,27 @@ jobs:
 
     - name: Executar validação de sintaxe com Python
       run: python .github/workflows/validate_alerts.py
+
+    - name: Instala dependências
+      run: python -m pip install --upgrade pip
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Garante o fetch de todo o histórico
+
+    - name: Verificar 'email_router' apenas nas linhas adicionadas
+      run: |
+        # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
+        ADDED_LINES=$(git diff HEAD~1 HEAD --unified=0| grep '^+' | grep -v '^+++')
+        echo "$ADDED_LINES"
+
+        # Verificar se as linhas adicionadas contêm o termo 'email_router'
+        if echo "$ADDED_LINES" | grep -q 'email_router'; then
+        #   echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
+        #   echo "$ADDED_LINES"
+          echo "O termo email_router foi encontrado, por favor remover pois esta descontinuado."
+          exit 1
+        else
+          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
+        fi
