@@ -77,3 +77,4 @@ jobs:
           exit 1
         else
           echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
+        fi
