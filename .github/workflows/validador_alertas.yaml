@@ -64,16 +64,16 @@ jobs:
     #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
     #     fi
 
-    - name: Verificar 'email_router' apenas nas adições e modificações do último commit
-      run: |
-        # Exibe mudanças introduzidas no último commit, focando em adições e modificações
-        ADDED_MODIFIED_LINES=$(git show --pretty="" --unified=0 HEAD | grep '^\+' | grep -v '^\+\+\+')
-        echo "$ADDED_MODIFIED_LINES"
+    # - name: Verificar 'email_router' apenas nas adições e modificações do último commit
+    #   run: |
+    #     # Exibe mudanças introduzidas no último commit, focando em adições e modificações
+    #     ADDED_MODIFIED_LINES=$(git show --pretty="" --unified=0 HEAD | grep '^\+' | grep -v '^\+\+\+')
+    #     echo "$ADDED_MODIFIED_LINES"
 
-        # Verifica se as linhas adicionadas ou modificadas contêm o termo 'email_router'
-        if echo "$ADDED_MODIFIED_LINES" | grep -q 'email_router'; then
-          echo "::error:: Termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
-          #exit 1
-        else
-          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
-        fi
+    #     # Verifica se as linhas adicionadas ou modificadas contêm o termo 'email_router'
+    #     if echo "$ADDED_MODIFIED_LINES" | grep -q 'email_router'; then
+    #       echo "::error:: Termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
+    #       #exit 1
+    #     else
+    #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
+    #     fi
