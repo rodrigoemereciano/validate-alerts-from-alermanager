@@ -71,7 +71,7 @@ jobs:
         echo "$ADDED_LINES"
 
         # Verificar se as linhas adicionadas contêm o termo 'email_router'
-        if echo "$ADDED_LINES" | grep -q '^+.*email_router'; then
+        if echo "$ADDED_LINES" | grep -q '^+.*email_router' | grep -v '^+++'; then
           echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
           exit 1
         else
