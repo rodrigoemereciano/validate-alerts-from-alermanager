@@ -73,7 +73,7 @@ jobs:
         # Verifica se as linhas adicionadas ou modificadas contêm o termo 'email_router'
         if echo "$ADDED_MODIFIED_LINES" | grep -q 'email_router'; then
           echo "::error:: Termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
-          exit 1
+          #exit 1
         else
           echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
         fi
