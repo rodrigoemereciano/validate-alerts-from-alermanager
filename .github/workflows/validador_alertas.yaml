@@ -64,17 +64,14 @@ jobs:
     #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
     #     fi
 
-    - name: Verificar 'email_router' apenas nas linhas adicionadas do último commit
+    - name: Extrair linhas modificadas do último commit
       run: |
-        # Utiliza git show para o último commit, filtrando para incluir apenas linhas adicionadas
-        ADDED_LINES=$(git show --pretty=format: --unified=0 ${{ github.sha }} | grep '^+' | grep -v '^+++' )
-        echo "Linhas adicionadas no último commit:"
-        echo "$ADDED_LINES"
-
-        # Verifica se as linhas adicionadas contêm o termo 'email_router'
-        if echo "$ADDED_LINES" | grep -q '^+.*email_router'; then
-          echo "::error::Termo 'email_router' encontrado nas linhas adicionadas."
+        # Extrai diferenças do último commit, filtrando especificamente por adições
+        git diff --name-only HEAD~ HEAD | grep -Ev '(^|/)\.[^/]*$' | xargs git diff HEAD~ HEAD -- | grep '^+' | grep -v '^+++' > modified_lines.txt
+        # Verifica se o arquivo modified_lines.txt contém o termo 'email_router'
+        if grep -q 'email_router' modified_lines.txt; then
+          echo "::error::Termo 'email_router' encontrado nas linhas modificadas."
           exit 1
         else
-          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
+          echo "Nenhum termo 'email_router' encontrado nas linhas modificadas."
         fi
