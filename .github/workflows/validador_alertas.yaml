@@ -15,8 +15,6 @@ jobs:
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # Garante o fetch de todo o histórico
 
     - name: Configurar Python
       uses: actions/setup-python@v2
@@ -33,14 +31,6 @@ jobs:
         sudo cp prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64/promtool /usr/local/bin/
         rm -fr prometheus-${{ env.PROMETHEUS_VERSION }}.linux-amd64
 
-    # - name: promtool check
-    #   uses: karancode/promtool-action@v0.0.1
-    #   with:
-    #     prom_version: '2.43.1'
-    #     prom_check_subcommand: 'rules'
-    #     prom_check_files: '**/*.y*ml'
-    #     prom_comment: true
-
     - name: Validar sintaxe do arquivo de alertas com o promtool
       run: |
         for dir in *-dev *-hom *-pro; do
@@ -55,10 +45,10 @@ jobs:
     - name: Instala dependências
       run: python -m pip install --upgrade pip
 
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
-    #   with:
-    #     fetch-depth: 0 # Garante o fetch de todo o histórico
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Garante o fetch de todo o histórico
 
     - name: Verificar 'email_router' apenas nas linhas adicionadas
       run: |
