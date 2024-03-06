@@ -66,13 +66,14 @@ jobs:
 
     - name: Verificar 'email_router' apenas nas linhas adicionadas do último commit
       run: |
-        # Usando o SHA do último commit para obter as diferenças
-        ADDED_LINES=$(git show --pretty="" --unified=0)
+        # Extrai somente as linhas adicionadas no último commit
+        ADDED_LINES=$(git show --pretty="" --name-only --diff-filter=A | xargs git show | grep '^+')
+        echo "Linhas adicionadas no último commit:"
         echo "$ADDED_LINES"
 
-        # Verificar se as linhas adicionadas contêm o termo 'email_router'
-        if echo "$ADDED_LINES" | grep -q '^+.*email_router' | grep -v '^+++'; then
-          echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
+        # Verifica se alguma das linhas adicionadas contém o termo 'email_router'
+        if echo "$ADDED_LINES" | grep -q '^+.*email_router'; then
+          echo "::error:: Termo 'email_router' encontrado nas linhas adicionadas."
           exit 1
         else
           echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
