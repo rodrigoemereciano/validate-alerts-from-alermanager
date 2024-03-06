@@ -58,8 +58,8 @@ jobs:
 
         # Verificar se as linhas adicionadas contêm o termo 'email_router'
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
-        #   echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
-        #   echo "$ADDED_LINES"
+          echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
+          echo "$ADDED_LINES"
           echo "O termo email_router foi encontrado, por favor remover pois esta descontinuado."
           exit 1
         else
