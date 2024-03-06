@@ -45,21 +45,34 @@ jobs:
     - name: Instala dependências
       run: python -m pip install --upgrade pip
 
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # Garante o fetch de todo o histórico
+    # - name: Checkout code
+    #   uses: actions/checkout@v2
+    #   with:
+    #     fetch-depth: 0 # Garante o fetch de todo o histórico
 
-    - name: Verificar 'email_router' apenas nas linhas adicionadas
+    # - name: Verificar 'email_router' apenas nas linhas adicionadas
+    #   run: |
+    #     # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
+    #     ADDED_LINES=$(git diff HEAD~1 HEAD --unified=0| grep '^+' | grep -v '^+++')
+    #     echo "$ADDED_LINES"
+
+    #     # Verificar se as linhas adicionadas contêm o termo 'email_router'
+    #     if echo "$ADDED_LINES" | grep -q 'email_router'; then
+    #       echo "O termo email_router foi encontrado, por favor remover pois esta descontinuado."
+    #       exit 1
+    #     else
+    #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
+    #     fi
+
+    - name: Verificar 'email_router' apenas nas linhas adicionadas do último commit
       run: |
-        # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
-        ADDED_LINES=$(git diff HEAD~1 HEAD --unified=0| grep '^+' | grep -v '^+++')
+        # Usando o SHA do último commit para obter as diferenças
+        ADDED_LINES=$(git show --pretty="" --unified=0)
         echo "$ADDED_LINES"
 
         # Verificar se as linhas adicionadas contêm o termo 'email_router'
-        if echo "$ADDED_LINES" | grep -q 'email_router'; then
-          echo "O termo email_router foi encontrado, por favor remover pois esta descontinuado."
+        if echo "$ADDED_LINES" | grep -q '^+.*email_router'; then
+          echo "::error ::Termo 'email_router' encontrado nas linhas adicionadas."
           exit 1
         else
           echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
-        fi
