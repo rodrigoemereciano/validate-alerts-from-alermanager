@@ -15,6 +15,8 @@ jobs:
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Garante o fetch de todo o histórico
 
     - name: Configurar Python
       uses: actions/setup-python@v2
@@ -53,10 +55,10 @@ jobs:
     - name: Instala dependências
       run: python -m pip install --upgrade pip
 
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # Garante o fetch de todo o histórico
+    # - name: Checkout code
+    #   uses: actions/checkout@v2
+    #   with:
+    #     fetch-depth: 0 # Garante o fetch de todo o histórico
 
     - name: Verificar 'email_router' apenas nas linhas adicionadas
       run: |
