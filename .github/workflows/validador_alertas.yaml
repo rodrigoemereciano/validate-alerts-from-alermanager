@@ -64,25 +64,15 @@ jobs:
     #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
     #     fi
 
-    - name: Verificar 'email_router' em alterações de código
+    - name: Procurar 'email_router' nas adições do último commit
       run: |
-        # Identifica os arquivos modificados ou adicionados no último commit
-        FILES_MODIFIED=$(git diff --name-only HEAD^ HEAD)
+        # Exibe as mudanças do último commit, filtrando para incluir apenas adições
+        ADDED_LINES=$(git show --pretty="" --unified=0 | grep '^+\S' | grep -v '^\+\+\+')
 
-        # Verifica se há arquivos modificados para evitar erros em repositórios vazios
-        if [[ -z "$FILES_MODIFIED" ]]; then
-          echo "Nenhuma modificação detectada."
-          exit 0
-        fi
-
-        # Loop através de arquivos modificados para buscar pelo termo específico apenas nas adições
-        for file in $FILES_MODIFIED; do
-          if git diff HEAD^ HEAD -- $file | grep -q '^+' && git diff HEAD^ HEAD -- $file | grep -q 'email_router'; then
-            echo "::error::Termo 'email_router' encontrado em $file"
-            echo "Falha intencional do workflow para indicar a necessidade de revisão."
-            exit 1
-          fi
-        done
-
-        echo "Nenhum termo 'email_router' encontrado nas alterações."
+        # Verifica se as linhas adicionadas contêm o termo 'email_router'
+        if echo "$ADDED_LINES" | grep -q 'email_router'; then
+          echo "::error::Termo 'email_router' encontrado nas adições do último commit."
+          exit 1
+        else
+          echo "Nenhum termo 'email_router' encontrado nas adições do último commit."
 
