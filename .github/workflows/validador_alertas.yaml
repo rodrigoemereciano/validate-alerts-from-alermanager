@@ -69,7 +69,7 @@ jobs:
         # Exibe as mudanças do último commit, filtrando para incluir apenas adições
         # Filtra fora linhas de cabeçalho de arquivo e captura apenas adições reais de código
         ADDED_LINES=$(git show --pretty="format:" --unified=0 HEAD | grep '^\+' | grep -v '^+++' | sed 's/^+//')
-
+        echo $ADDED_LINES
         # Verifica se as linhas adicionadas contêm o termo 'email_router'
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
           echo "::error::Termo 'email_router' encontrado nas adições do último commit, por favor remover pois esta descontinuado."
