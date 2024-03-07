@@ -78,6 +78,7 @@ jobs:
         else
           echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
           echo "::set-output name=email_router_found::false"
+        fi
 
     - name: Outras etapas baseadas no resultado
       if: steps.check_code.outputs.email_router_found == 'true'
