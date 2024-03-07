@@ -68,7 +68,7 @@ jobs:
       id: check_code
       run: |
         # Exibe mudanças introduzidas no último commit, focando em adições e modificações
-        ADDED_MODIFIED_LINES=$(git show --pretty="" --unified=0 HEAD | grep '^\+' | grep -v '^\+\+\+')
+        ADDED_MODIFIED_LINES=$(git show --pretty="" --unified=0 HEAD | grep '^\+' | grep -v '^+++')
         echo "Analisando linhas adicionadas ou modificadas no último commit para 'email_router'..."
 
         # Verifica se as linhas adicionadas ou modificadas contêm o termo 'email_router'
