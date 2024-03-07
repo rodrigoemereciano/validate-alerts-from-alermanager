@@ -67,7 +67,8 @@ jobs:
     - name: Procurar 'email_router' nas adições do último commit
       run: |
         # Exibe as mudanças do último commit, filtrando para incluir apenas adições
-        ADDED_LINES=$(git show --pretty="" --unified=0 | grep -v '^+++'| grep '^+')
+        # Filtra fora linhas de cabeçalho de arquivo e captura apenas adições reais de código
+        ADDED_LINES=$(git show --pretty="format:" --unified=0 HEAD | grep '^\+' | grep -v '^\+\+\+' | sed 's/^+//')
 
         # Verifica se as linhas adicionadas contêm o termo 'email_router'
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
