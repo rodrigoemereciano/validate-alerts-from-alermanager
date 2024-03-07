@@ -68,7 +68,6 @@ jobs:
       run: |
         # Exibe as mudanças do último commit, filtrando para incluir apenas adições
         ADDED_LINES=$(git show --pretty="" --unified=0 | grep -v '^+++'| grep '^+')
-        echo "$ADDED_LINES"
 
         # Verifica se as linhas adicionadas contêm o termo 'email_router'
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
