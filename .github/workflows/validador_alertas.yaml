@@ -75,4 +75,4 @@ jobs:
           exit 1
         else
           echo "Nenhum termo 'email_router' encontrado nas adições do último commit."
-
+        fi
