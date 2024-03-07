@@ -45,35 +45,23 @@ jobs:
     - name: Instala dependências
       run: python -m pip install --upgrade pip
 
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
-    #   with:
-    #     fetch-depth: 0 # Garante o fetch de todo o histórico
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Garante o fetch de todo o histórico
 
-    # - name: Verificar 'email_router' apenas nas linhas adicionadas
-    #   run: |
-    #     # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
-    #     ADDED_LINES=$(git diff HEAD~1 HEAD --unified=0| grep '^+' | grep -v '^+++')
-    #     echo "$ADDED_LINES"
-
-    #     # Verificar se as linhas adicionadas contêm o termo 'email_router'
-    #     if echo "$ADDED_LINES" | grep -q 'email_router'; then
-    #       echo "O termo email_router foi encontrado, por favor remover pois esta descontinuado."
-    #       exit 1
-    #     else
-    #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
-    #     fi
-
-    - name: Procurar 'email_router' nas adições do último commit
+    - name: Verificar 'email_router' apenas nas linhas adicionadas
       run: |
-        # Exibe as mudanças do último commit, filtrando para incluir apenas adições
-        # Filtra fora linhas de cabeçalho de arquivo e captura apenas adições reais de código
-        ADDED_LINES=$(git show --pretty="format:" --unified=0 HEAD | grep '^\+' | grep -v '^+++')
+        # Obter diferenças do último commit, filtrando por linhas que começam com "+", excluindo as que são parte do cabeçalho do diff
+        ADDED_LINES=$(git diff HEAD~1 HEAD --unified=0| grep '^+' | grep -v '^+++')
         echo "$ADDED_LINES"
-        # Verifica se as linhas adicionadas contêm o termo 'email_router'
+
+        # Verificar se as linhas adicionadas contêm o termo 'email_router'
         if echo "$ADDED_LINES" | grep -q 'email_router'; then
-          echo "::error::Termo 'email_router' encontrado nas adições do último commit, por favor remover pois esta descontinuado."
+          echo "O termo email_router foi encontrado, por favor remover pois esta descontinuado."
           exit 1
         else
-          echo "Nenhum termo 'email_router' encontrado nas adições do último commit."
+          echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
         fi
+
+
