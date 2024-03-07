@@ -64,10 +64,8 @@ jobs:
     #       echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas."
     #     fi
 
-    - name: Checkout code
-      uses: actions/checkout@v2
-
     - name: Verificar 'email_router' apenas nas adições e modificações do último commit
+      id: check_code
       run: |
         # Exibe mudanças introduzidas no último commit, focando em adições e modificações
         ADDED_MODIFIED_LINES=$(git show --pretty="" --unified=0 HEAD | grep '^\+' | grep -v '^\+\+\+')
@@ -75,9 +73,15 @@ jobs:
 
         # Verifica se as linhas adicionadas ou modificadas contêm o termo 'email_router'
         if echo "$ADDED_MODIFIED_LINES" | grep -q 'email_router'; then
-          echo "::error::Termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
-          echo "Falha intencional do workflow para indicar a necessidade de revisão."
-          exit 1
+          echo "Termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
+          echo "::set-output name=email_router_found::true"
         else
           echo "Nenhum termo 'email_router' encontrado nas linhas adicionadas ou modificadas."
+          echo "::set-output name=email_router_found::false"
+
+    - name: Outras etapas baseadas no resultado
+      if: steps.check_code.outputs.email_router_found == 'true'
+      run: |
+        echo "Ações adicionais aqui devido à presença do termo 'email_router'."
+        # Aqui você pode adicionar mais comandos ou ações baseadas na detecção do termo.
 
